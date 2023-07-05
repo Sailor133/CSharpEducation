@@ -10,20 +10,27 @@ namespace Task2
     static class Map
     {
 
-        private static char[,] map = new char[3, 3] { { '1', '2', '3' }, { '4', '5', '6' }, { '7', '8', '9' } };
+        public static char[,] map = new char[3, 3] { { '1', '2', '3' }, { '4', '5', '6' }, { '7', '8', '9' } };
+
+        public static void RefreshMap()
+        {
+            map = new char[3, 3] { { '1', '2', '3' }, { '4', '5', '6' }, { '7', '8', '9' } };
+        }
         /// <summary>
         /// Вывод поля в консоль.
         /// </summary>
         public static void DrowMap()
         {
-            int counter = 1;
             for (int i = 0; i < map.GetLength(0); i++)
             {
                 Console.WriteLine(string.Join("", Enumerable.Repeat("----", map.GetLength(0)))); //Вывод границы строки.
                 Console.Write("| "); //Вывод границы поля.
                 for (int j = 0; j < map.GetLength(1); j++)
                 {
+                    if (map[i,j] == 'O') Console.ForegroundColor = ConsoleColor.Red;
+                    else if(map[i, j] == 'X') Console.ForegroundColor = ConsoleColor.Blue;
                     Console.Write(map[i, j]);
+                    Console.ForegroundColor = ConsoleColor.White;                   
                     Console.Write(" | ");
                 }
                 Console.WriteLine();
@@ -35,11 +42,16 @@ namespace Task2
         /// </summary>
         /// <param name="value"></param>
         /// <param name="mark"></param>
-        public static void MakeMove(int value, char choice)
+        public static void MakeMove(int value, bool flag)
         {
             int i = (value - 1) / 3;
             int j = (value - 1) % 3;
-            map[i, j] = choice;
+            if (map[i, j] == 'X' || map[i, j] == 'O') throw new ArgumentException();
+
+            if (flag)
+                map[i, j] = 'X';
+            else
+                map[i, j] = 'O';
         }
     }
 }
