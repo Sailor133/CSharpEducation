@@ -2,13 +2,15 @@
 {
     class Program
     {
-        private static void Main() 
+        private static void Main()
         {
             StartGameplay();
         }
 
         private static void StartGameplay()
         {
+            int startIndex = -1;
+            int direction = -1;
             bool flag = true;
             while (true)
             {
@@ -30,6 +32,7 @@
                 }
                 if (CheckinWinnings()) break;
             }
+            Map.DrowMap();
             Console.WriteLine(@"Игра закончилась, хотите сыграть заного? (y\n)");
             if (Console.ReadLine() == "y")
             {
@@ -38,24 +41,41 @@
             }
             else return;
         }
-
+        /// <summary>
+        /// Проверка на победну.
+        /// </summary>
+        /// <param name="startIndex">Начальный элемент победной комбинации</param>
+        /// <param name="direction">Победное направление: 0-вертикаль, 1 - горизонталь, 2- диагональ</param>
+        /// <returns></returns>
         private static bool CheckinWinnings()
         {
+            int startIndex;
+            int direction;
             #region Проверка горизонтали и вертикали на выйгрыш
-            for (int i = 0; i < Map.map.GetLength(0); i++)
+            for (startIndex = 0; startIndex < Map.map.GetLength(0); startIndex++)
             {
-                if (Map.map[i, 0] == Map.map[i, 1] && Map.map[i, 1] == Map.map[i, 2]) return true;
-                if (Map.map[0, i] == Map.map[1, i] && Map.map[1, i] == Map.map[2, i]) return true;
-            }
-            #endregion
-            #region Проверка диагонали на выйгрыш
-            if (Map.map[0, 0] == Map.map[1, 1] && Map.map[1, 1] == Map.map[2, 2])
-            {
-                return true;
-            }
-            if (Map.map[2, 0] == Map.map[1, 1] && Map.map[1, 1] == Map.map[0, 2])
-            {
-                return true;
+                if (Map.map[startIndex, 0] == Map.map[startIndex, 1] && Map.map[startIndex, 1] == Map.map[startIndex, 2]) // Горизонталь
+                {
+                    Map.WinCoordinates[startIndex, 0] = Map.WinCoordinates[startIndex, 1] = Map.WinCoordinates[startIndex, 2] = 1;
+                    return true;
+                }
+                if (Map.map[0, startIndex] == Map.map[1, startIndex] && Map.map[1, startIndex] == Map.map[2, startIndex]) // Вертикаль
+                {
+                    Map.WinCoordinates[0, startIndex] = Map.WinCoordinates[1, startIndex] = Map.WinCoordinates[2, startIndex] = 1;
+                    return true;
+                }
+                #endregion
+                #region Проверка диагонали на выйгрыш
+                if (Map.map[0, 0] == Map.map[1, 1] && Map.map[1, 1] == Map.map[2, 2])
+                {
+                    Map.WinCoordinates[0, 0] = Map.WinCoordinates[1, 1] = Map.WinCoordinates[2, 2] = 1;
+                    return true;
+                }
+                if (Map.map[2, 0] == Map.map[1, 1] && Map.map[1, 1] == Map.map[0, 2])
+                {
+                    Map.WinCoordinates[2, 0] = Map.WinCoordinates[1, 1] = Map.WinCoordinates[0, 2] = 1;
+                    return true;
+                }        
             }
             #endregion
             return false;

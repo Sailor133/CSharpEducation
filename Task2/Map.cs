@@ -11,7 +11,7 @@ namespace Task2
     {
 
         public static char[,] map = new char[3, 3] { { '1', '2', '3' }, { '4', '5', '6' }, { '7', '8', '9' } };
-
+        public static int[,] WinCoordinates = new int[map.GetLength(0), map.GetLength(1)];
         public static void RefreshMap()
         {
             map = new char[3, 3] { { '1', '2', '3' }, { '4', '5', '6' }, { '7', '8', '9' } };
@@ -19,8 +19,9 @@ namespace Task2
         /// <summary>
         /// Вывод поля в консоль.
         /// </summary>
-        public static void DrowMap()
+        public static void DrowMap(int startIndex = -1, int direction = -1)
         {
+
             for (int i = 0; i < map.GetLength(0); i++)
             {
                 Console.WriteLine(string.Join("", Enumerable.Repeat("----", map.GetLength(0)))); //Вывод границы строки.
@@ -29,6 +30,7 @@ namespace Task2
                 {
                     if (map[i,j] == 'O') Console.ForegroundColor = ConsoleColor.Red;
                     else if(map[i, j] == 'X') Console.ForegroundColor = ConsoleColor.Blue;
+                    if (WinCoordinates[i,j] == 1) Console.ForegroundColor = ConsoleColor.Green;
                     Console.Write(map[i, j]);
                     Console.ForegroundColor = ConsoleColor.White;                   
                     Console.Write(" | ");
@@ -36,7 +38,7 @@ namespace Task2
                 Console.WriteLine();
             }
             Console.WriteLine(string.Join("", Enumerable.Repeat("----", map.GetLength(0)))); //Вывод границы строки.
-        }
+        }       
         /// <summary>
         /// Добавление на игровое поле знака.
         /// </summary>
