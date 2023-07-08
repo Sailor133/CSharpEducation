@@ -12,6 +12,12 @@ namespace Task2
 
         public static char[,] map = new char[3, 3] { { '1', '2', '3' }, { '4', '5', '6' }, { '7', '8', '9' } };
         public static int[,] WinCoordinates = new int[map.GetLength(0), map.GetLength(1)];
+        public static int GetLenght { 
+            get 
+            {
+                return map.GetLength(0);
+            } 
+        }
         public static void RefreshMap()
         {
             map = new char[3, 3] { { '1', '2', '3' }, { '4', '5', '6' }, { '7', '8', '9' } };
